@@ -5,30 +5,31 @@ session_start(); //sirve para conectarse a la sesion para poder manejar las vari
 
 //variables con valores predeterminados que a lo largo del script pueden cambiar
 $mensaje = '';
+$fondoNum = 'rgba(255, 0, 0, 1)'; //fondo rojo por defecto
 $visible = 'block'; //controla la visibilidad del formulario a traves de la propiedad display de css
 
 if(empty($_SESSION['jugando'])){ //si la variable jugando esta vacia, inicializa la partida
 
-    $_SESSION['candado'] = [ // array para generar numeros aleatorios 
+    $_SESSION['candado'] = array( // array para generar numeros aleatorios 
         rand(0,9),  // para el primer digito 
         rand(0,9),  // para el segundo digito
         rand(0,9)   // para el tercer digito 
-    ];
+    );
     $_SESSION['intentos'] = 1; //variable de sesion que contiene el contador del numero de intentos
     $_SESSION['jugando'] = 1; //variable de control
     $_SESSION['posicion_actual'] = 0; //primer dígito (posición 0) que luego irá incrementando si se van adivinando los dígitos
-    $_SESSION['adivinados'] = [false, false, false]; // para controlar qué posiciones se han adivinado
+    $_SESSION['adivinados'] = array(false, false, false); // para controlar qué posiciones se han adivinado
 
     var_dump($_SESSION['candado']); //muestro la combinación secreta en la consola para pruebas
 }
 
-if(!empty($_POST['intento'])){ //condicion que solo se ejecuta si existe y no esta vacia la variable
+if(isset($_POST['intento']) && $_POST['intento']>=0 && $_POST['intento']<=9){ //condicion que solo se ejecuta si existe un numero entre 0 y 9 y no esta vacia la variable intento, que es el numero que teclea el usuario
 
     $digitoIntento = $_POST['intento']; //igualo la variable intento al valor que me ha enviado el usuario
     $digitoCorrecto= $_SESSION['candado'][$_SESSION['posicion_actual']]; //obtengo el dígito correcto de la posición actual
     $posicion = $_SESSION['posicion_actual']; //obtengo la posición actual
         
-        if($digitoIntento == $digitoCorrecto){ // verifico el dígito actual
+        if($digitoIntento == $digitoCorrecto){ // verifico si coincide el numero tecleado con el correcto random
             $mensaje = "Oleee! El dígito secreto es: " . $digitoCorrecto;
             $_SESSION['adivinados'][$posicion] = true; //ha adivinado el digito en la posición actual
             
@@ -38,6 +39,7 @@ if(!empty($_POST['intento'])){ //condicion que solo se ejecuta si existe y no es
             if($_SESSION['posicion_actual'] >= 3){ // verifico si ya ha adivinado todos los digitos
                 $combinacion = $_SESSION['candado'][0] . $_SESSION['candado'][1] . $_SESSION['candado'][2]; //combinacion completa
                 $mensaje = "Yihaaaa! Adivinaste el candado completo: " . $combinacion . " en " . $_SESSION['intentos'] . " intentos";
+                $fondoNum = 'rgb(144,238,144)'; //cambio el fondo de los numeros a verde claro
                 $visible = 'none'; //oculto el formulario asignandole display none
                 $_SESSION['jugando'] = 0; //corto y le doy fin a la partida. Se reinician los intentos y el adivina (el numero random)
             }
@@ -69,50 +71,76 @@ if(!empty($_POST['intento'])){ //condicion que solo se ejecuta si existe y no es
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Candado</title>
+    <style>
+        table {
+            margin: 0 auto; /* centra la tabla horizontalmente */
+        }
+
+        td {
+            background-color: <?=$fondoNum;?>; /* Cambia el fondo de los números adivinados a verde claro */
+            padding-inline: 20px;
+            text-align: center;
+        }
+        #container{
+            text-align: center;
+        }
+        #redire {
+            margin-top: 20px;
+            text-align: center; /* Asegura que el enlace esté centrado */
+            display: block; /* Asegura que ocupe todo el ancho disponible */
+        }
+        #cajaformu{
+            display : <?= $visible; ?>;
+        }
+
+    </style>  
 </head>
-<body>
-    <h1>Adivina el candado de 3 dígitos</h1>
+<body onLoad="document.getElementById('intento').focus();"> <!-- para que al cargar la pagina el cursor se coloque directamente en la caja de texto -->
+    <div id="container">
+        <h1>Adivina el candado de 3 dígitos</h1>
 
-    <p>Intento número: <?php echo $_SESSION['intentos']; ?></p>
-    <p><?php echo $mensaje; ?></p>
+        <p>Intento número: <?php echo $_SESSION['intentos']; ?></p>
+        <p><?= $mensaje; ?></p> <!-- otra manera de inyectar php+echo -->
 
-    <div<?php echo $visible; ?>>
-        <form name="formu" id ="formu" method="POST" action="candado.php">
-            <input type="text" name="intento" id="intento" title="Teclea un dígito" > <!-- para crear la caja de texto en la que el usuario mete su numero -->
-		<!-- el name es lo que vamos a usar para enviarle los datos al servidor -->
-            <input type="submit" value="Probar combinación"> <!-- para crear el boton de enviar el numero al servidor -->
-        </form>
+        <div id= "cajaformu">
+            <form name="formu" id ="formu" method="POST" action="candado.php">
+            <!-- action="<?php echo $_SERVER['PHP_SELF']; ?>"  otra forma de referirse a sí mismo -->
+                <input type="text" name="intento" id="intento" title="Teclea un dígito" > <!-- para crear la caja de texto en la que el usuario mete su numero -->
+            <!-- el name es lo que vamos a usar para enviarle los datos al servidor -->
+                <input type="submit" value="Probar combinación"> <!-- para crear el boton de enviar el numero al servidor -->
+            </form>
+        </div>
+        <div>
+            <table border = "1"> <!-- estilo para que se vean las lineas de la tabla -->
+                <tr> 
+                    <td><?php if($_SESSION['adivinados'][0] == true){ //controlo que cambie de '?' al numero correcto usando la posicion del array booleano que declaré antes en cada caso
+                        echo $_SESSION['candado'][0];
+                    } else {
+                        echo "?";
+                    }
+                    ?></td>
+                </tr>
+                <tr>
+                    <td><?php if($_SESSION['adivinados'][1] == true){ ///controlo que cambie de '?' al numero correcto usando la posicion del array booleano que declaré antes en cada caso
+                        echo $_SESSION['candado'][1];
+                    } else {
+                        echo "?";
+                    }
+                    ?></td>
+                </tr>
+                <tr>
+                    <td><?php if($_SESSION['adivinados'][2] == true){ ///controlo que cambie de '?' al numero correcto usando la posicion del array booleano que declaré antes en cada caso
+                        echo $_SESSION['candado'][2];
+                    } else {
+                        echo "?";
+                    }
+                    ?></td>
+                </tr>
+            </table>
+        </div>
+        <div id="redire">
+            <a href="cerrar.php?redire=candado.php">Jugar de nuevo</a> <!-- link para cerrar sesion y redireccionarse automaticamente a adivina2 (a sí misma).php para jugar de nuevo desde cero -->
+        </div>
     </div>
-    <div>
-        <table border = "1"> <!-- estilo para que se vean las lineas de la tabla -->
-            <tr> 
-                <td><?php if($_SESSION['adivinados'][0] == true){ //controlo que cambie de '?' al numero correcto usando la posicion del array booleano que declaré antes en cada caso
-                    echo $_SESSION['candado'][0];
-                } else {
-                    echo "?";
-                }
-                ?></td>
-            </tr>
-            <tr>
-                <td><?php if($_SESSION['adivinados'][1] == true){ ///controlo que cambie de '?' al numero correcto usando la posicion del array booleano que declaré antes en cada caso
-                    echo $_SESSION['candado'][1];
-                } else {
-                    echo "?";
-                }
-                ?></td>
-            </tr>
-            <tr>
-                <td><?php if($_SESSION['adivinados'][2] == true){ ///controlo que cambie de '?' al numero correcto usando la posicion del array booleano que declaré antes en cada caso
-                    echo $_SESSION['candado'][2];
-                } else {
-                    echo "?";
-                }
-                ?></td>
-            </tr>
-        </table>
-    </div>
-        <a href="cerrar.php?redire=candado.php">Jugar de nuevo</a> <!-- link para cerrar sesion y redireccionarse automaticamente a adivina2 (a sí misma).php para jugar de nuevo desde cero -->
-    </div>
-
 </body>
 </html>
