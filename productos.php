@@ -6,12 +6,12 @@ var_dump($_POST);
 
 $precio = 0;
 if (!empty($_POST['minimo']) && $_POST['minimo']>0) { //si el campo minimo no está vacío y es mayor que 0
-    $precio = ($_POST['minimo']); //reasigno el valor del campo minimo a la variable precio
+    $precio = ($_POST['minimo']); //reasignoo el valor del campo minimo a la variable precio
 }
 
 $producto = '';
 if (!empty($_POST['producto'])) { //si el campo producto no está vacío
-    $producto = '%'.$_POST['producto'].'%'; //reasigno el valor del campo producto a la variable producto, añadiendo los comodines % para buscar cualquier coincidencia que contenga la palabra
+    $producto = '%'.$_POST['producto'].'%'; //reasigno el valor del campo producto a la variable producto
 } 
 
 
