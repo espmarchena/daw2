@@ -43,7 +43,8 @@ $stmt->execute(); //metodo que ejecuta la consulta
 
 $listado='';
 while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un fetch coge los datos brutos y los prepara en forma de matriz)
-    $listado .= '<li>'.$registro['producto'].': '.$registro['precio'].'</li>'; //almacena los productos en una lista
+    $link = '<a href="productos_alta.php?id='.$registro['id'].'">Editar </a>'; //crea un enlace para editar el producto que recibe en la url gracias al get
+    $listado .= '<li>'.$link.$registro['producto'].': '.$registro['precio'].'</li>'; //almacena los productos en una lista
 }
 
 ?>
