@@ -14,12 +14,24 @@ if(!empty($_POST['producto'])){
         $precio = $_POST['precio']; //reasigno el valor del campo precio a la variable precio
     }
 
-    $sql = 'INSERT INTO productos (producto, precio) VALUES (:producto, :precio);'; //consulta SQL para insertar un nuevo producto con las variables capadas
-    $stmt = $conexion->prepare($sql); //prepara la consulta
-    $stmt->bindParam(':producto', $_POST['producto'], PDO::PARAM_STR);
-    $stmt->bindParam(':precio', $_POST['precio'], PDO::PARAM_STR);
-    $stmt->execute(); //ejecuta la consulta
-    $id = $conexion->lastInsertId(); //almaceno en la variable $id el id del último registro insertado
+    //PARA ACTUALIZAR UN PRODUCTO
+    if(isset($_POST['idupdate']) && $_POST['idupdate']>0){ //si el idupdate existe y es mayor que 0
+        $id = $_POST['idupdate']; //reasigno el valor del campo idupdate a la variable id
+        $sql = 'UPDATE productos SET producto = :producto, precio = :precio WHERE id = :id;'; //consulta SQL para actualizar el producto con las variables capadas
+        $stmt = $conexion->prepare($sql); //prepara la consulta
+        $stmt->bindParam(':producto', $_POST['producto'], PDO::PARAM_STR);
+        $stmt->bindParam(':precio', $_POST['precio'], PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute(); //ejecuta la consulta
+    }
+    else{ //PARA INSERTAR UN NUEVO PRODUCTO
+        $sql = 'INSERT INTO productos (producto, precio) VALUES (:producto, :precio);'; //consulta SQL para insertar un nuevo producto con las variables capadas
+        $stmt = $conexion->prepare($sql); //prepara la consulta
+        $stmt->bindParam(':producto', $_POST['producto'], PDO::PARAM_STR);
+        $stmt->bindParam(':precio', $_POST['precio'], PDO::PARAM_STR);
+        $stmt->execute(); //ejecuta la consulta
+        $id = $conexion->lastInsertId(); //almaceno en la variable $id el id del último registro insertado
+    }
 
     header("Location: productos.php?id=$id"); //header es para manipular la info de la cabecera que se le manda al cliente, se posiciona arriba del todo y REDIRECCIONA a la pagina de listado de productos antes que nada, pasando el id del nuevo producto insertado por la URL(post)
     
@@ -38,7 +50,7 @@ if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
     $stmt = $conexion->prepare($sql); //prepara la consulta (instruccion encapsulada) y devuelve una consulta preparada
     $stmt->bindParam(':id', $id, PDO::PARAM_INT); //metodo que asocia el valor de la variable id al marcador :id en la consulta SQL
     $stmt->execute(); //metodo que ejecuta la consulta
-    $datos = $stmt->fetch(); //almacena el resultado de la consulta en el array $datos con el fetch
+    $datos = $stmt->fetch(); //almacena el resultado de la consulta en el array $datos con el metodo fetch
 }
 ?>
 
@@ -52,6 +64,10 @@ if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
 <body>
 
     <form name="formu" id="formu" method="POST" action="productos_alta.php">
+
+        <input type="hidden" name="idupdate" value="<?= $id ?>"> <!-- campo oculto (el usuario no tiene pq verlo) que almacena el id del producto a editar -->
+
+
         <label for="producto">Nombre del producto: </label> <!-- accesibilidad y posicionamiento. El for hace referenci/se asocia al id del input -->
         <input type="text" name="producto" id="producto" value="<?= $datos['producto'] ?>"> <!-- en el value insertará el valor del producto -->
 
@@ -59,6 +75,8 @@ if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
         <input type="text" name="precio" id="precio" value="<?= $datos['precio'] ?>"> <!-- en el value insertará el valor del precio -->
 
         <input type="submit" value="Registrar datos"> <!-- boton para enviar el formulario al servidor -->
+
+
     </form>
 
 </body>
