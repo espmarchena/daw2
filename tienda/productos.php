@@ -36,7 +36,7 @@ if(isset($_GET['iddelete']) && $_GET['iddelete']>0){ //si el iddelete existe y e
 }
 
 
-//PARA LISTAR LOS PRODUCTOS (CON O SIN FILTROS)
+//PARA LISTAR LOS PRODUCTOS
 $sql = "SELECT * FROM productos WHERE 1 $filtros;"; //consulta SQL para seleccionar todos los productos cuyo precio sea mayor que el valor de la variable precio y cuyo nombre contenga la palabra de la variable producto. Cuando el metodo prepare se encuentra con :precio o :producto lo que hace es sustituirlo por el valor de la variable correspondiente, de esta forma se evita la inyección SQL
 $stmt = $conexion->prepare($sql); //prepara la consulta (instruccion encapsulada) y devuelve una consulta preparada
 if($precio >0){ //solo se ejecuta el bindParam si el precio es mayor que 0
@@ -55,7 +55,6 @@ $stmt->execute(); //metodo que ejecuta la consulta
 $listado='';
 while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un fetch coge los datos brutos y los prepara en forma de matriz)
     $link = '<a href="productos_alta.php?id='.$registro['id'].'">Editar </a>'; //crea un enlace para editar el producto que recibe en la url gracias al get
-   // $link .= '<a href="productos.php?iddelete='.$registro['id'].'">Eliminar </a>'; //crea un enlace para eliminar el producto que recibe en la url gracias al get
     $link .= '<a href="javascript:confirmarBorrado('.$registro['id'].');">Eliminar </a>'; //crea un enlace para eliminar el producto que recibe en la url gracias al get, llamando a la funcion javascript confirmarBorrado
     $listado .= '<li>'.$link.$registro['producto'].': '.$registro['precio'].'</li>'; //almacena los productos en una lista
     //$registro es un array asociativo que cambia de valor con cada iteración del while: $registro[][] 

@@ -2,8 +2,7 @@
 include('config.php'); //incluye el archivo de configuracion
 include('inc_libreria.php'); //incluye el archivo de libreria
 
-var_dump($_POST);
-
+//PARA FILTRAR LOS CLIENTES
 $filtros = '';
 $nombre = '';
 $apellido1 = '';
@@ -23,8 +22,6 @@ if (!empty($_POST['apellido2'])) {
     $apellido2 = '%' . $_POST['apellido2'] . '%'; //reasigno el valor del campo apellido2 a la variable apellido2, añadiendo los comodines % para buscar cualquier coincidencia que contenga la palabra
     $filtros .= ' AND apellido2 LIKE :apellido2';
 }
-
-var_dump($filtros);
 
 $conexion = conectarse($servidor, $usuariodb, $clavedb, $opcionesDB); //objeto PDO que conecta a la base de datos
 

@@ -65,17 +65,16 @@ if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
 
     <form name="formu" id="formu" method="POST" action="productos_alta.php">
 
-        <input type="hidden" name="idupdate" value="<?= $id ?>"> <!-- campo oculto (el usuario no tiene pq verlo) que almacena el id del producto a editar -->
+        <input type="hidden" name="idupdate" value="<?= $id ?>"> <!-- campo oculto (el usuario no tiene pq verlo) que almacena el id del producto a actualizar -->
 
 
-        <label for="producto">Nombre del producto: </label> <!-- accesibilidad y posicionamiento. El for hace referenci/se asocia al id del input -->
+        <label for="producto">Nombre del producto: </label> <!-- accesibilidad y posicionamiento. El for hace referencia/se asocia al id del input -->
         <input type="text" name="producto" id="producto" value="<?= $datos['producto'] ?>"> <!-- en el value insertará el valor del producto -->
 
         <label for="precio">Precio del producto: </label> <!-- accesibilidad y posicionamiento. El for hace referenci/se asocia al id del input -->
         <input type="text" name="precio" id="precio" value="<?= $datos['precio'] ?>"> <!-- en el value insertará el valor del precio -->
 
         <input type="submit" value="Registrar datos"> <!-- boton para enviar el formulario al servidor -->
-
 
     </form>
 
