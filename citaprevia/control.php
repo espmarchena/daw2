@@ -1,5 +1,7 @@
 <?php //no cerramos la etiqueta pq este archivo solo va a llevar php
 
+$nocontroles= true; //variable para que no controle la sesión en inc_libreria.php
+
 include ('config.php'); //incluimos el archivo de configuración
 include ('inc_libreria.php'); //incluimos las librerías de la logica de acceso a la bbdd
 
@@ -27,6 +29,5 @@ if(!empty($_POST['usuario']) && !empty($_POST['clave'])){ //comprobamos si recib
         }
     }
 }
-
-//noentra($patras, 0); //si $patras es true, vuelve al index.php con el mensaje de error 0 (identificación incorrecta), si es false no hace nada
+noentra($patras, 0); //si $patras es true, vuelve al index.php con el mensaje de error 0 (identificación incorrecta), si es false no hace nada
 

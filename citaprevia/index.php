@@ -1,5 +1,10 @@
 <?php
 
+$nocontroles= true; //variable para que no controle la sesión en inc_libreria.php
+
+include ('config.php'); //incluimos el archivo de configuración
+include ('inc_libreria.php'); //incluimos las librerías de la logica de acceso a la bbdd
+
 ?>
 
 <!DOCTYPE html>

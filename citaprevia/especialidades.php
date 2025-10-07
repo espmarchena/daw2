@@ -4,11 +4,6 @@
 include ('config.php'); //incluimos el archivo de configuración
 include ('inc_libreria.php'); //incluimos las librerías de la logica de acceso a la bbdd
 
-if(empty($_SESSION['usuario'])){ //si la variable de sesión usuario está vacía, el usuario no está identificado y no puede acceder a la página
-    noentra(true, 1); //llamamos a la función noentra para que redireccione al index.php con el mensaje de error 1 (acceso no autorizado)
-    exit;  //por si falla la redirección
-}
-
 $conexion = conectarse($servidor, $usuariodb, $clavedb, $opcionesDB); //llamamos a la función que conecta con la bbdd
 $sql = 'SELECT * FROM especialidades e
         JOIN usuarios_especialidades ue ON e.idespecialidad = ue.idespecialidad
