@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="encabezado">Cargando ......</h1>
+    <input type ="button" name="calcula" id="calcula" value="Calcular">
+    <div id="cajaresultado"></div>
+
+    <label for="numdni">DNI sin letra:</label>
+    <input type="text" num ="numdni" id="numdni" maxlength="8">
+    <input type="button" id="botoncalcular" value="Calcular Letra">
+
+<script>
+
+    document.addEventListener('DOMContentLoaded',function(){ //espera a que se cargue el DOM
+
+        //CAMBIAR TEXTO ENCABEZADO
+        document.getElementById('encabezado').innerHTML = 'DOM Cargado'; //cambiar el texto del encabezado
+
+        //SUMA DE DOS NUMEROS
+        document.getElementById('calcula').addEventListener('click',function(){ //espera a que se pulse el boton
+            let numero1 = Number(prompt('Introduce el primer numero:','')); //pide el primer numero y lo guarda en la variable. En el primer parametro se pone un mensaje y en el segundo un valor por defecto. Es tipo string, si quiero usarlo como numero, tengo que castearlo con Number()
+            let numero2 = Number(prompt('Introduce el segundo numero:','')); //pide el segundo numero y lo guarda en la variable. En el primer parametro se pone un mensaje y en el segundo un valor por defecto. Es tipo string, si quiero usarlo como numero, tengo que castearlo con Number()
+
+            if(!isNaN(numero1) && !isNaN(numero2)){ //is not a number, por defecto es false (si no es un numero), por lo que si le ponemos ! delante, sera true (si es un numero)
+                let resultado = numero1 + numero2; //si los dos son numeros, los suma
+                document.getElementById('cajaresultado').innerHTML = 'El resultado de la suma es: ' + resultado; //muestra el resultado en la caja de resultado
+            }
+   
+        });
+
+        //CALCULAR LETRA DNI
+        // 26264464 Mod 23 = 5 -> M (resta del número del DNI entre 23)
+        document.getElementById('botoncalcular').addEventListener('click',function(){ //espera a que se pulse el boton
+            let dni = Number(document.getElementById('numdni').value); //guarda el valor del input(lo que se ha tecleado) en la variable dni. Lo casteo para no perder los 0 a la izquierda 'de este objeto guardo su'
+            let letras = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E']; //array con las letras del DNI
+            let letra = letras[dni % 23]; //calcula la letra del dni
+            alert('La letra del DNI es: ' + letra); //muestra la letra en un alert
+        });
+
+    });   
+
+
+</script>
+    
+</body>
+</html>

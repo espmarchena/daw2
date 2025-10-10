@@ -1,5 +1,8 @@
 <?php
 
+session_start(); //iniciamos la sesión para poder acceder a las variables de sesión para comprobar que el usuario está identificado. Crea una cookie en el navegador del usuario
+
+
 function cerrarSesion(){
 	session_unset(); //borra las variables que estan en memoria
 	session_destroy(); //destruye la sesion
@@ -14,3 +17,4 @@ function conectarse($servidor,$usuariodb,$clavedb,$opcionesDB){ //funcion para c
 	}
 	return $conectado; //devuelve el objeto PDO
 }
+

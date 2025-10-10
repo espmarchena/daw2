@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparto de Caramelos</title>
+    <style>
+ #contenedor{
+            display: flex;
+        }
+        #contenedor div{
+            width: 300px;height: 300px; margin:auto;background-image: url('img/recipiente.png');display: inline;display:flex;
+			justify-content: center; align-items: center; text-align: center;font-size: 2em; font-weight: bold; 
+        }
+        #capa_inputs{
+            width: 100%; text-align:center;margin-top:10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="contenedor"></div>
+    <div id="capa_inputs">
+        <input type="number" id="cantidadCaramelos" value="1">
+        <span id="botonesRecipientes"></span>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            let recipientes = ['Recipiente 1', 'Recipiente 2', 'Recipiente 3', 'Recipiente 4', 'Recipiente 5'];
+            let caramelos = [0, 0, 0, 0, 0];
+            let contenidoHTML = '';
+            let botonesHTML = '';
+            
+            // Crear los recipientes y botones en un mismo bucle
+            for(let i=0;i<recipientes.length;i++){
+                contenidoHTML += '<div id="recipiente'+i+'">'+recipientes[i]+':<br>'+caramelos[i]+' caramelos</div>';
+                botonesHTML += '<button id="boton'+i+'">Añadir a '+recipientes[i]+'</button>';
+            }
+            
+            document.getElementById('contenedor').innerHTML = '<br>'+contenidoHTML;
+            document.getElementById('botonesRecipientes').innerHTML = botonesHTML;
+            
+            // Asignar eventos a los botones
+            for(let i=0;i<recipientes.length;i++){
+                document.getElementById('boton'+i).addEventListener('click',function(){
+                    let cantidad = document.getElementById('cantidadCaramelos').value * 1;
+                    caramelos[i] += cantidad;
+                    document.getElementById('recipiente'+i).innerHTML = recipientes[i]+':<br>'+caramelos[i]+' caramelos';
+
+                });
+            }
+        });
+    </script>
+</body>
+</html>
