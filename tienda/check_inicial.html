@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredientes Tiramisú</title>
+    <style>
+        form p { /* solo aplica a las etiquetas p que estan dentro del form */
+            cursor: pointer; /* para mostrar una manita al pasar por encima */
+        }
+    </style>
+</head>
+<body>
+
+    <form name="formu" id="formu">
+
+        <p> 
+            <img src="img/nook.png" width="16" id="check_cafe">
+            <input type="hidden" name="cafe" id="cafe" value="0">
+            Café
+        </p>
+        
+        <p>
+            <img src="img/nook.png" width="16" id="check_cacao">
+            <input type="hidden" name="cacao" id="cacao" value="0">
+            Cacao 
+        </p>
+
+        <p>
+            <img src="img/nook.png" width="16" id="check_mascarpone">
+            <input type="hidden" name="Mascarpone" id="mascarpone" value="0">
+            Mascarpone 
+        </p>
+
+    </form>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded',function(){
+            document.getElementById('check_cafe').addEventListener('click',function(){ //cuando haga click en la imagen del check del cafe
+                let elcafe = document.getElementById('cafe').value; //guardo el valor del input en la variable elcafe
+                if(elcafe==0){ //si esta a 0 (false)
+                    document.getElementById('cafe').value = 1 ;//cambia a 1 (true)
+                    document.getElementById('check_cafe').src = 'img/ok.png'; //y cambia la propiedad src (cambia a la imagen del check en verde)
+                    //this.src = 'img/ok.png'; ------al estar dentro del objeto check_cafe, se puede simplificar poniendo this
+                }
+                else{
+                    document.getElementById('cafe').value = 0 ;//cambia a 0 (false) 
+                    this.src = 'img/nook.png'; //this se refiere a 'check_cafe' y simplifica a document.getElementById('check_cafe')
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

@@ -62,10 +62,19 @@ $stmt->execute(); //metodo que ejecuta la consulta
 
 //RECORRER LOS RESULTADOS DE LA CONSULTA Y CREAR EL LISTADO DE CLIENTES
 $listado='';
+$ids = [];
 while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un fetch coge los datos brutos y los prepara en forma de matriz)
     $link = '<a href="clientes_alta.php?id='.$registro['id'].'" class="botoncito" title="Editar cliente">E </a>'; //crea un enlace para editar el cliente que recibe en la url gracias al get
     $link .= '<a href="javascript:confirmarBorrado('.$registro['id'].');" class="botoncito" title="Borrar cliente">B </a>'; //crea un enlace para eliminar el cliente que recibe en la url gracias al get, llamando a la funcion javascript confirmarBorrado
-    $listado .= '<li>'.$link.$registro['nombre'].' '.$registro['apellido1'].' '.$registro['apellido2'].' '.$registro['vip'].'</li>'; //almacena los clientes en una lista
+    $imagenVip = '<img src="img/nook.png" width = "16">';
+    if($registro['vip']==1){
+        $imagenVip = '<img src = "img/ok.png" width= "16">';
+    }
+    $listado .= '<li>';
+        $listado.= $link.$registro['nombre'].' '.$registro['apellido1'].' '.$registro['apellido2'];
+        $listado .= '<span class="botoncito" id= "imgvip_'.$registro['id'].'">'.$imagenVip.'</span>';
+    $listado .= '</li>';
+    $ids[] = $registro['id'];
 }
 
 ?>
@@ -115,5 +124,14 @@ while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un
     <ul>
         <?php echo $listado; ?> <!-- muestra la lista de clientes -->
     </ul>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded',function(){
+            let clientes = [<?= implode(',', $ids) ?>]; //variable desde php que va a inyectar los id de forma dinamica. implode coge todos los elementos de un array y lo convierte en un string con los valores separados con comas
+        });
+
+    </script>
+
 </body>
 </html>
