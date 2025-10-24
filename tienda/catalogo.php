@@ -9,15 +9,15 @@ $conexion = conectarse($servidor,$usuariodb,$clavedb,$opcionesDB); // objeto PDO
 $sql_categorias = "SELECT * FROM categoria";
 $stmt_categorias = $conexion->prepare($sql_categorias); // prepara la consulta
 $stmt_categorias->execute(); // ejecuta la consulta
-$listado = '';
+$listadocategorias = '';
 $idCategorias = array(); // crear array con los ids de categorías
     
 while ($reg = $stmt_categorias->fetch()){ // bucle que acaba cuando se terminan los datos. Objeto fetch de la clase stmt que formatea a array asociativo
-    $listado .= '<div class="caja_item" id="cat_'.$reg['id'].'">'; //caja para cada categoria. El id es para usarlo en js
+    $listadocategorias .= '<div class="caja_item" id="cat_'.$reg['id'].'">'; //caja para cada categoria. El id es para usarlo en js
         // meto cada foto en un div
-        $listado .= '<div class = "marco"> <img src ="images/'.$reg['foto'].'" alt=""> </div>'; // marco es para los div que contienen imagen
-        $listado .= '<div class = "info">'.$reg['categoria'].'</div>'; // info es para el texto de abajo de las imagenes
-    $listado .= '</div>'; // concatena en cada iteracion mostrando 
+        $listadocategorias .= '<div class = "marco"> <img src ="images/'.$reg['foto'].'" alt=""> </div>'; // marco es para los div que contienen imagen
+        $listadocategorias .= '<div class = "info">'.$reg['categoria'].'</div>'; // info es para el texto de abajo de las imagenes
+    $listadocategorias .= '</div>'; // concatena en cada iteracion mostrando 
     $idCategorias[] = $reg['id']; // llenar el array con los ids de las categorias
 }
 
@@ -79,8 +79,10 @@ $listadoProductos .= '</div>';
             cursor: pointer;
         }
         img{
-            width: 100%; /* que ocupen todo el ancho disponible */
-            height: 300px; /* alto fijo */
+            width: 100%; 
+            height: 150px;
+            object-fit: contain; /* ajusta la imagen para que se vea completa dentro del contenedor, manteniendo sus proporciones originales */
+            border-radius: 5px;
             margin: 10px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -99,14 +101,14 @@ $listadoProductos .= '</div>';
 
     <h2>Categorías</h2>
     <div id="catalogo">
-        <?= $listado ?>
+        <?= $listadocategorias ?>
     </div>
+    <div id= "listadoproductos"> <!-- contenedor que se rellena con ajax --> </div> 
 
     <h2>Producto en Promoción</h2>
-    <div id= "listadoproductos"> <!-- contenedor que se rellena con ajax -->
+    <div id= "listadoproductos">
         <?= $listadoProductos ?>
     </div> 
-
     
     <div>
         <a href="catalogo.php">Volver al catálogo completo</a>
