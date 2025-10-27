@@ -27,25 +27,34 @@ if(!empty($_POST['nombre'])){
         $vip = $_POST['vip']; //reasigno el valor del campo vip a la variable vip
     }
 
+        if(empty($_POST['dni'])){ //si el campo dni está vacío
+        $_POST['dni'] = ''; //le asigno valor vacío
+    }
+    else{
+        $dni = $_POST['dni']; //reasigno el valor del campo dni a la variable dni
+    }
+
     //PARA ACTUALIZAR UN CLIENTE
     if(isset($_POST['idupdate']) && $_POST['idupdate']>0){ //si el idupdate existe y es mayor que 0
         $id = $_POST['idupdate']; //reasigno el valor del campo idupdate a la variable id
-        $sql = 'UPDATE clientes SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, vip = :vip WHERE id = :id;'; //consulta SQL para actualizar el cliente con las variables capadas
+        $sql = 'UPDATE clientes SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, vip = :vip, dni = :dni WHERE id = :id;'; //consulta SQL para actualizar el cliente con las variables capadas
         $stmt = $conexion->prepare($sql); //prepara la consulta
         $stmt->bindParam(':nombre', $_POST['nombre'], PDO::PARAM_STR);
         $stmt->bindParam(':apellido1', $_POST['apellido1'], PDO::PARAM_STR);
         $stmt->bindParam(':apellido2', $_POST['apellido2'], PDO::PARAM_STR);
         $stmt->bindParam(':vip', $_POST['vip'], PDO::PARAM_STR);
+        $stmt->bindParam(':dni', $_POST['dni'], PDO::PARAM_STR);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute(); //ejecuta la consulta
     }
     else{ //PARA INSERTAR UN NUEVO CLIENTE
-    $sql = 'INSERT INTO clientes (nombre, apellido1, apellido2, vip) VALUES (:nombre, :apellido1, :apellido2, :vip);'; //consulta SQL para insertar un nuevo cliente con las variables capadas
+    $sql = 'INSERT INTO clientes (nombre, apellido1, apellido2, vip) VALUES (:nombre, :apellido1, :apellido2, :vip, :dni);'; //consulta SQL para insertar un nuevo cliente con las variables capadas
     $stmt = $conexion->prepare($sql); //prepara la consulta
     $stmt->bindParam(':nombre', $_POST['nombre'], PDO::PARAM_STR);
     $stmt->bindParam(':apellido1', $_POST['apellido1'], PDO::PARAM_STR);
     $stmt->bindParam(':apellido2', $_POST['apellido2'], PDO::PARAM_STR);
     $stmt->bindParam(':vip', $_POST['vip'], PDO::PARAM_STR);
+    $stmt->bindParam(':dni', $_POST['dni'], PDO::PARAM_STR);
     $stmt->execute(); //ejecuta la consulta
     $id = $conexion->lastInsertId(); //almaceno en la variable $id el id del último registro insertado
     }
@@ -58,7 +67,8 @@ $datos = array(
     'nombre' => '',
     'apellido1' => '',      
     'apellido2' => '',
-    'vip' => 0
+    'vip' => '0',
+    'dni' => ''
 );
 if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
     $id = $_GET['id']; //reasigno el valor del campo id a la variable id
@@ -78,6 +88,7 @@ if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alta de Clientes</title>
+    <script src="js/ajax.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -96,8 +107,28 @@ if(isset($_GET['id']) && $_GET['id']>0){ //si el id existe y es mayor que 0
         <label for="vip">Cliente VIP: </label>
         <input type="text" name="vip" id="vip" value="<?= $datos['vip'] ?>">
 
+        <br>
+
+        <label for="dni">DNI: </label>
+        <input type="text" name="dni" id="dni" value="<?= $datos['dni'] ?>">
+        <span id="avisodni"> </span> <!-- capadestino del ajax -->
+
         <input type="submit" value="Registrar cliente">
     </form>
+
+    <script>
+        // 
+        document.addEventListener('DOMContentLoaded', function(){
+
+            document.getElementById('dni').addEventListener('change', function(){
+
+                let url = 'clientes_dni.php?dni='+document.getElementById('dni').value;
+                cargarContenido(url,'avisodni');
+            });
+
+        });
+
+    </script>
 
 </body>
 </html>

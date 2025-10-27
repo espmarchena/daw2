@@ -73,6 +73,8 @@ while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un
     $listado .= '<li>';
         $listado.= $link.$registro['nombre'].' '.$registro['apellido1'].' '.$registro['apellido2'];
         $listado .= '<span class="botoncito" id= "imgvip_'.$registro['id'].'">'.$imagenVip.'</span>';
+        $listado .= "<span class='observa' id='caja_observa_{$registro['id']}' data-cliente-id='{$registro['id']}'> {$registro['observaciones']} </span>"; // usamos span pq es un objeto en linea y el textArea es block-inline, asi no hay q ponerle estilos a un div
+        // con el data-cliente-id. desde el listener podemos obtener el id del cliente para usarlo en js y ajax
     $listado .= '</li>';
     $ids[] = $registro['id'];
 }
@@ -85,13 +87,22 @@ while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Clientes</title>
+    <script src="js/ajax.js" type="text/javascript"></script> <!-- importar ajax -->
     <style>
         .botoncito{
             display: inline-block;  /* que se comporte como un enlace (etiqueta <a>) pero con propiedades de bloque */
             border: thin dashed rgb(255,170,0); /* borde punteado */
             background-color: rgb(255,255,140);
             padding: 5px; /* espacio interior */
-    }
+        }
+        .observa{
+            display: inline-block;  
+            padding: 3px; /* que haya un espacio donde clicar si esta vacío */
+            min-width: 70px; /* que haya un minimo de caja */
+            cursor: pointer;
+            border: thin dotted #cd36aaff;
+        }
+
     </style>
     <script>
         function confirmarBorrado(idborrar){ //funcion que muestra un mensaje de confirmación antes de eliminar un cliente
@@ -127,8 +138,35 @@ while ($registro = $stmt->fetch()) { //recorre los resultados de la consulta (un
 
     <script>
 
+        //UN SOLO LISTENER PARA TODA LA PAGINA, QUE CONTROLE TODOS LOS EVENTOS
         document.addEventListener('DOMContentLoaded',function(){
-            let clientes = [<?= implode(',', $ids) ?>]; //variable desde php que va a inyectar los id de forma dinamica. implode coge todos los elementos de un array y lo convierte en un string con los valores separados con comas
+            let clientes = [<?= implode(',', $ids) ?>]; // variable desde php que va a inyectar los id de forma dinamica. implode coge todos los elementos de un array y lo convierte en un string con los valores separados con comas
+
+            document.addEventListener('click',function(e){ // evento click. la 'e' captura el evento completo para luego quedarnos con lo que nos interese mas concretamente
+                if(e.target.getAttribute('data-cliente-id')){ // si tiene ese atribute es una de esas observaciones que queremos editar en la pagina
+                    let texto = e.target.innerHTML; // guardo el contenido del objeto en una variable para manejarlo/manipularlo mas comodamente
+                    e.target.innerHTML = `<textarea esobservacion="1"> ${texto} </textarea>`; // relleno el contenido del span con un textarea
+                    // es lo mismo que concatenar asi: e.target.innerHTML = '<textarea>'+texto+'</textarea>';
+
+                    let campo  = e.target.querySelector('textarea'); // querySelector pide la etiqueta del objeto. 'campo' es el textarea
+                    campo.focus(); // el elemento recibe el foco del teclado y queda listo para la interacción (El cursor aparece en el textarea listo para escribir)
+
+                    campo.addEventListener('blur',function(){ // evento blur (si se abandona algun objeto) aplicado directamente al objeto 
+                        alert('es un textarea'); // con esto controlo si el listener esta viendolo todo
+
+                        // cuando se abandone el textarea, almacenamos en un variable su contenido
+                        let nuevoValor = campo.value;
+                        e.target.innerHTML = nuevoValor; // modificamos el span con el nuevo contenido (nuevoValor). e.target es el span
+                        
+                        url= 'clientes_actualiza.php?idcliente='+e.target.getAttribute('data-cliente-id')+'&observaciones='+nuevoValor; //cogemos el id del cliente del atributo y actualiza las observaciones con el nuevo valor que le estamos mandando
+                        cargarContenido(url,'');
+
+                    });
+                }
+            });
+
+
+
         });
 
     </script>
