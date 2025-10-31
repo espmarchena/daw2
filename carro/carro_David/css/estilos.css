@@ -1,0 +1,134 @@
+html, body{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+body{
+    display: flex;
+    flex-direction: column;
+
+}
+header{
+    background-color: rgb(255,255,255);  
+    padding: 20px; 
+}
+#info_usuario{
+    text-align:right;
+    font-size:0.8;
+}
+.nombre_usuario{
+    display: inline-block;
+    padding: 3px;
+    border: thin dashed rgb(0,0,80);
+    font-weight: bold;
+    font-size: 1;
+}
+main{
+    flex: 1;
+    display:flex;
+}
+#panel_categorias{
+    flex:1;
+    background-color: rgb(200,255,200);
+    padding: 10px;
+}
+
+#panel_categorias ul{
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#panel_categorias li{
+    background-color: rgb(0,70,0);
+    margin-bottom: 5px;
+    padding-top: 10px;
+}
+
+#panel_categorias a{
+    color: rgb(200, 255, 200);
+    text-decoration: none;
+    padding: 10px 8px;
+    display: inline-block;
+}
+
+#panel_categorias a:hover{
+    background-color: rgb(255, 200, 200);
+    text-decoration: underline;
+    color: rgb(0, 90, 0);
+}
+
+
+#panel_productos{
+    display: flex;
+    flex:4;
+    background-color: rgb(255,200,200);
+    padding: 10px;
+}
+.caja_item{
+    flex:1;
+    border: thin dashed #e1e1e1;
+    border-radius: 6px;
+    background-color: #ffefef;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    max-height: 300px;
+}
+.caja_item img{
+    width: 100%;
+}
+.marco{
+    flex:2;
+}
+.info{
+    flex:2;
+    font-size:1.1em;
+    text-align: center;
+}
+
+.bpalcarro{
+    flex:1;
+    padding: 10px;
+    cursor: pointer;
+    background-color: rgb(0,0,90);
+    color: rgb(200,200,255);
+    width: 70%;
+    border-radius: 7px;
+    margin:auto;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bpalcarro:hover{
+    background-color: rgb(200,200,255);
+    color: rgb(0,0,90);
+}
+
+
+
+#panel_carro{
+    flex:1;
+    background-color: rgb(200,200,255);
+    padding: 10px;
+}
+.caja_item_carro{
+    border: 2px dotted rgb(100,60,0);
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(210,220,255);
+    margin-bottom: 5px;
+    display: flex;
+}
+.caja_item_carro div{
+margin:3px;
+}
+.item_carro_producto{
+    flex:1;
+}
+.bquitacarro{
+    cursor:pointer;
+}
