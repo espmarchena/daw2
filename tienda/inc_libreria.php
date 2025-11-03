@@ -8,6 +8,9 @@ function cerrarSesion(){
 	session_destroy(); //destruye la sesion
 }
 
+array(
+	
+);
 function conectarse($servidor,$usuariodb,$clavedb,$opcionesDB){ //funcion para conectar a la base de datos
 	try{ //PDO es la clase por la cual se hace la conexion a la base de datos
 		$conectado = new PDO($servidor,$usuariodb,$clavedb,$opcionesDB); //crea un objeto PDO para conectar a la base de datos
