@@ -1,30 +1,30 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint; /* subclase de Schema */
+use Illuminate\Support\Facades\Schema; /* clase Shcema */
 
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
+        Schema::create('users', function (Blueprint $table) { /* crea una tabla y sus propiedades */
+            $table->id(); 
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('email')->unique(); /* metodo que indica que no puede haber dos iguales */
+            $table->timestamp('email_verified_at')->nullable(); /* permite valores nulos */
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
+        Schema::create('password_reset_tokens', function (Blueprint $table) { /* crea una tabla y sus propiedades */
             $table->string('email')->primary();
             $table->string('token');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->nullable(); /* permite valores nulos */
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -38,10 +38,10 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
-    {
+    { /* es importante en el orden en que están creados, para que no elimine unas tablas antes de otras. Va en orden inverso a la creación */
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
