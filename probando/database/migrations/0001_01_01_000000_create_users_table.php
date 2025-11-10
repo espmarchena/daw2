@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Schema; /* clase Shcema */
 
 return new class extends Migration
 {
-    /**
-     * Ejecutar las migraciones.
-     */
+    
+    //Ejecutar las migraciones. Son un sistema de control de versiones para tu base de datos. Te permiten modificar el esquema de la base de datos de manera estructurada y reversible
+    
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) { /* crea una tabla y sus propiedades */
+        Schema::create('users', function (Blueprint $table) { /* De la clase Schema, crea una tabla users y sus propiedades */
             $table->id(); 
             $table->string('name');
             $table->string('email')->unique(); /* metodo que indica que no puede haber dos iguales */

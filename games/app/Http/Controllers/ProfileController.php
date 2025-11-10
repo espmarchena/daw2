@@ -11,18 +11,20 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    // Mostrar el formulario de perfil del usuario.
-    
-    public function edit(Request $request): View // esta funcion edita el perfil
-    { 
-        return view('profile.edit', [ // primer parametro, una vista de 'directorio.archivo' -> busca dentro de la carpeta profile en las vistas (resources/views/profile/), el archivo edit.blade.php
-            'user' => $request->user(), // segundo parametro, los datos del usuario con el metodo request
-        ]); // osea, la vista espera recibir un array de datos
+    /**
+     * Display the user's profile form.
+     */
+    public function edit(Request $request): View
+    {
+        return view('profile.edit', [
+            'user' => $request->user(),
+        ]);
     }
 
-    // Actualizar la información del perfil del usuario
-
-    public function update(ProfileUpdateRequest $request): RedirectResponse // esta funcion actualiza el perfil 
+    /**
+     * Update the user's profile information.
+     */
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
 
@@ -36,7 +38,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Eliminar la cuenta del usuario.
+     * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -53,6 +55,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/'); // redirect apunta al router. Te redirije a la raiz del proyecto
+        return Redirect::to('/');
     }
 }

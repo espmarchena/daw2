@@ -20,10 +20,10 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Gestionar una solicitud de autenticación entrante.
+     * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse // store guarda datos (almacena)
-    { // esta funcion crea la sesion
+    public function store(LoginRequest $request): RedirectResponse
+    {
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -32,10 +32,10 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destruir una sesión autenticada.
+     * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse // destroy destruye datos
-    { // esta funcion destruye la sesion
+    public function destroy(Request $request): RedirectResponse
+    {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

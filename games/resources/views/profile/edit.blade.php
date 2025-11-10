@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }} {{--  __('') es una función de ayuda de Laravel que busca el texto pasado como argumento en los archivos de traducción de la aplicación para mostrarlo --}}
+            {{ __('Profile') }}
         </h2>
     </x-slot>
 
