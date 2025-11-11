@@ -14,6 +14,7 @@ Route::get('/games/create',[GameController::class, 'create'])->name('games.creat
 Route::post('/games',[GameController::class, 'store'])->name('games.store'); //al llegar el metodo store por metodo post, no hace falta ponerlo en la ruta
 Route::get('/games/{id}/edit', [GameController::class, 'edit'])->name('games.edit'); // le pasamos el id del juego antes de la vista
 Route::put('/games/{id}', [GameController::class, 'update'])->name('games.update'); //como en el post, no hace falta pasarle en la ruta la vista, el controlador se lo pasa
+Route::delete('/games/{id}', [GameController::class, 'destroy'])-> name('games.destroy'); //como en el post, no hace falta pasarle en la ruta la vista, el controlador se lo pasa
 
 Route::get('/dashboard', function () {
     return view('dashboard');

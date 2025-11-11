@@ -9,7 +9,17 @@
         <li>
             {{ $game->name}} : {{ $game->price}} {{-- $game es cada juego que se va a ir mostrando en el bucle, y le asociamos el nombre y el precio --}}
             <a href="{{ route('games.edit', $game->id) }}"> {{-- el metodo route crea la url que toque, le indicamos que añada el id como variable  --}}
-                (Editar)
+                (Editar) </a>
+
+            <form action="{{ route('games.destroy', $game->id) }}" method="POST" style="display:inline;"> {{-- el estilo lo usamos para que la caja del boton borrar se ponga al lado y no abajo --}}
+                @csrf {{-- los formularios x seguridad se cifran, esto mete un token unico--}}
+
+                @method('DELETE') {{-- --}}
+
+                <button type= "submit"> Borrar</button>
+
+            </form>
+
         </li>
         @endforeach
     </ul>

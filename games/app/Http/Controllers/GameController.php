@@ -58,7 +58,7 @@ class GameController extends Controller
     FUNCIÓN: Mostrar formulario RELLENO para editar juego existente
     CRUD: PRE-UPDATE (Preparación para actualizar)
     */
-    public function edit($id) //recibe un id
+    public function edit($id) // necesita recibir el id del juego 
     {
         $game = Game::findOrFail($id); // busca un registro por su ID y si no lo encuentra, automáticamente lanza una excepcion 404
 
@@ -86,5 +86,14 @@ class GameController extends Controller
         $game->save(); // save guarda los datos que se han generado en la instancia del modelo Game. En este caso, hace un insert en la tabla game
 
         return redirect()->route('games.index'); //
+    }
+
+    public function destroy($id) // necesita recibir el id del juego 
+    {
+        $game = Game::findOrFail($id); // busca un registro por su ID y si no lo encuentra, automáticamente lanza una excepcion 404
+
+        $game->delete(); // delete elimina los datos que se han generado en la instancia del modelo Game.
+
+        return redirect()->route('games.index');
     }
 }

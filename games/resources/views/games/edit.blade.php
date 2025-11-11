@@ -4,7 +4,7 @@
 
     @csrf {{-- los formularios x seguridad se cifran, esto mete un token unico--}}
 
-    @method('PUT') {{-- metodo para actualizar los dastos (hay dos: put y patch). El put actualiza recursos completos--}}
+    @method('PUT') {{-- metodo para actualizar los datos (hay dos: put y patch). El put actualiza recursos completos--}}
 
     <div>
         <label> Nombre: </label>
