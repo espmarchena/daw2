@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GameController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); //devuelve una vista y la ejecuta
 });
 
 // si son rutas que apuntan a paginas que no necesitan un logueo se ponen aqui fuera
-Route::get('/games',[GameController::class, 'index']); // primer parametro: ruta para nuestro listado de juegos. Segundo parametro: controlador de los juegos. Estos van siempre entre corchetes. 
+Route::get('/games',[GameController::class, 'index']); // primer parametro: ruta para nuestro listado de juegos. Segundo parametro: controlador de los juegos. Estos van siempre entre corchetes. Le estamos pasando el metodo index que hemos desarrollado en el controlador que le hemos pasado. En este caso hacer un listado
+Route::get('/games/create',[GameController::class,'create'])->name('games.create'); //la clase Route tiene un metodo llamado name, que le da un nombre a la ruta (un alias para utilizarla)
+Route::post('/games',[GameController::class,'store'])->name('games.store'); //al llegar el metodo store por metodo post, no hace falta ponerlo en la ruta
 
 Route::get('/dashboard', function () {
     return view('dashboard');
