@@ -1,6 +1,7 @@
 <h1> Añadir Nuevo Juego </h1>
 
 <form action ="{{ route('games.store') }}" method="POST"> {{-- la doble llave significa inyeccion de php(echo) --}}
+
     @csrf {{-- los formularios x seguridad se cifran, esto mete un token unico--}}
     <div>
         <label> Nombre: </label>

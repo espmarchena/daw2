@@ -8,6 +8,8 @@
         @foreach($games as $game) {{--  estructura: $nombredelarray 'as' $llamarlocomoquieras, normalmente como el array pero en singular porque coge un juego en cada vuelta --}}
         <li>
             {{ $game->name}} : {{ $game->price}} {{-- $game es cada juego que se va a ir mostrando en el bucle, y le asociamos el nombre y el precio --}}
+            <a href="{{ route('games.edit', $game->id) }}"> {{-- el metodo route crea la url que toque, le indicamos que añada el id como variable  --}}
+                (Editar)
         </li>
         @endforeach
     </ul>
